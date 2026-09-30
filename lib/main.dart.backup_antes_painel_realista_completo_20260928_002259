@@ -1,0 +1,1046 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const ExperienciaApp());
+}
+
+class ExperienciaApp extends StatelessWidget {
+  const ExperienciaApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'EXPERIÊNCIA - Trânsito e Transporte',
+      theme: ThemeData(
+        useMaterial3: true,
+        scaffoldBackgroundColor: const Color(0xFFF3F5F7),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFD71920)),
+      ),
+      home: const PainelExperiencia(),
+    );
+  }
+}
+
+class PainelExperiencia extends StatelessWidget {
+  const PainelExperiencia({super.key});
+
+  static const vermelho = Color(0xFFD71920);
+  static const azulEscuro = Color(0xFF172A3A);
+  static const texto = Color(0xFF263746);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final desktop = constraints.maxWidth >= 1000;
+
+        if (!desktop) {
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: azulEscuro,
+              foregroundColor: Colors.white,
+              title: const Text(
+                'EXPERIÊNCIA',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            drawer: const Drawer(child: MenuLateral(compacto: true)),
+            body: const ConteudoPainel(),
+          );
+        }
+
+        return const Scaffold(
+          body: Row(
+            children: [
+              SizedBox(width: 215, child: MenuLateral()),
+              Expanded(child: ConteudoPainel()),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MenuLateral extends StatelessWidget {
+  final bool compacto;
+
+  const MenuLateral({super.key, this.compacto = false});
+
+  @override
+  Widget build(BuildContext context) {
+    const itens = [
+      (Icons.dashboard_rounded, 'Visão Geral'),
+      (Icons.menu_book_rounded, 'Cursos e Módulos'),
+      (Icons.groups_rounded, 'Alunos'),
+      (Icons.badge_rounded, 'Instrutores'),
+      (Icons.business_rounded, 'Empresas'),
+      (Icons.fact_check_rounded, 'Avaliação Prática'),
+      (Icons.workspace_premium_rounded, 'Certificados'),
+      (Icons.credit_card_rounded, 'Carteirinhas'),
+      (Icons.sell_rounded, 'Planos e Licenças'),
+      (Icons.account_balance_wallet_rounded, 'Financeiro'),
+      (Icons.bar_chart_rounded, 'Relatórios'),
+      (Icons.settings_rounded, 'Configurações'),
+    ];
+
+    return Container(
+      color: PainelExperiencia.azulEscuro,
+      child: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 18),
+            Container(
+              width: 94,
+              height: 94,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                border: Border.all(color: Colors.white, width: 3),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Image.asset(
+                'assets/logos/logo_experiencia.jpeg',
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 11),
+            const Text(
+              'EXPERIÊNCIA',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w900,
+                letterSpacing: .5,
+              ),
+            ),
+            const Text(
+              'TRÂNSITO E TRANSPORTE',
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 9,
+                letterSpacing: .7,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 9),
+                itemCount: itens.length,
+                itemBuilder: (context, index) {
+                  final item = itens[index];
+                  final selecionado = index == 0;
+
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 3),
+                    decoration: BoxDecoration(
+                      color: selecionado
+                          ? PainelExperiencia.vermelho
+                          : Colors.transparent,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: ListTile(
+                      dense: true,
+                      visualDensity: const VisualDensity(
+                        horizontal: -2,
+                        vertical: -2,
+                      ),
+                      leading: Icon(item.$1, size: 19, color: Colors.white),
+                      title: Text(
+                        item.$2,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: selecionado
+                              ? FontWeight.bold
+                              : FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(16, 10, 16, 20),
+              child: Text(
+                'PESSOAS MAIS PREPARADAS\nPARA UM TRÂNSITO MAIS SEGURO',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white60,
+                  fontSize: 8,
+                  height: 1.5,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ConteudoPainel extends StatelessWidget {
+  const ConteudoPainel({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(18),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Cabecalho(),
+            const SizedBox(height: 16),
+            const Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: [
+                Indicador(
+                  titulo: 'Alunos Ativos',
+                  numero: '258',
+                  percentual: '+12%',
+                  icone: Icons.groups_rounded,
+                ),
+                Indicador(
+                  titulo: 'Cursos em Andamento',
+                  numero: '12',
+                  percentual: '+20%',
+                  icone: Icons.menu_book_rounded,
+                ),
+                Indicador(
+                  titulo: 'Certificados Emitidos',
+                  numero: '186',
+                  percentual: '+18%',
+                  icone: Icons.workspace_premium_rounded,
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < 1050) {
+                  return const Column(
+                    children: [
+                      Cursos(),
+                      SizedBox(height: 16),
+                      EscolinhaMotoristas(),
+                      SizedBox(height: 16),
+                      AvaliacaoPratica(),
+                    ],
+                  );
+                }
+
+                return const Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 7, child: Cursos()),
+                    SizedBox(width: 16),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: [
+                          EscolinhaMotoristas(),
+                          SizedBox(height: 16),
+                          AvaliacaoPratica(),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 18),
+            const Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                PortalInstrutor(),
+                CertificadosCarteirinhas(),
+                ReferenciasLegais(),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Cabecalho extends StatelessWidget {
+  const Cabecalho({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final estreito = constraints.maxWidth < 850;
+
+            final titulo = Row(
+              children: [
+                Container(
+                  width: 78,
+                  height: 78,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: Image.asset(
+                    'assets/logos/logo_experiencia.jpeg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 15),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'EXPERIÊNCIA TRÂNSITO E TRANSPORTE',
+                        style: TextStyle(
+                          color: PainelExperiencia.vermelho,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 21,
+                        ),
+                      ),
+                      SizedBox(height: 3),
+                      Text(
+                        'Formação • Capacitação • Avaliação',
+                        style: TextStyle(
+                          color: PainelExperiencia.texto,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(height: 7),
+                      Text(
+                        'Conhecimento • Segurança • Profissionais para um trânsito melhor',
+                        style: TextStyle(color: Colors.black54, fontSize: 11),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Coparticipação: Alberto One 3',
+                        style: TextStyle(
+                          color: PainelExperiencia.vermelho,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+
+            const administradores = Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                Administrador(
+                  nome: 'Odenilson de Oliveira',
+                  foto: 'assets/imagens/administradores/odenilson.png',
+                ),
+                Administrador(
+                  nome: 'Alberto Neves',
+                  foto: 'assets/imagens/administradores/alberto.png',
+                ),
+              ],
+            );
+
+            if (estreito) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [titulo, const SizedBox(height: 14), administradores],
+              );
+            }
+
+            return Row(
+              children: [
+                Expanded(child: titulo),
+                administradores,
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class Administrador extends StatelessWidget {
+  final String nome;
+  final String foto;
+
+  const Administrador({super.key, required this.nome, required this.foto});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 155,
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF6F7F8),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFE3E6E8)),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(radius: 24, backgroundImage: AssetImage(foto)),
+          const SizedBox(width: 7),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  nome,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Text(
+                  'Administrador',
+                  style: TextStyle(fontSize: 8, color: Colors.black54),
+                ),
+                const SizedBox(height: 2),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 1,
+                  ),
+                  decoration: BoxDecoration(
+                    color: PainelExperiencia.vermelho,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: const Text(
+                    'ADMIN',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 7,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Indicador extends StatelessWidget {
+  final String titulo;
+  final String numero;
+  final String percentual;
+  final IconData icone;
+
+  const Indicador({
+    super.key,
+    required this.titulo,
+    required this.numero,
+    required this.percentual,
+    required this.icone,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 245,
+      height: 82,
+      padding: const EdgeInsets.all(13),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: const Color(0xFFE5E8EA)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 45,
+            height: 45,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFE9EA),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(icone, color: PainelExperiencia.vermelho),
+          ),
+          const SizedBox(width: 11),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  titulo,
+                  style: const TextStyle(fontSize: 10, color: Colors.black54),
+                ),
+                Text(
+                  numero,
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            percentual,
+            style: const TextStyle(
+              color: Color(0xFF25965A),
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Cursos extends StatelessWidget {
+  const Cursos({super.key});
+
+  static const cursos = [
+    (
+      'Formação de Motoristas Profissionais',
+      'Carreteiros e Caminhões',
+      Icons.local_shipping_rounded,
+    ),
+    (
+      'Transporte Coletivo de Passageiros',
+      'Urbano, Rodoviário e Fretamento',
+      Icons.directions_bus_rounded,
+    ),
+    (
+      'Transporte Escolar',
+      'Segurança e Legislação',
+      Icons.directions_bus_filled_rounded,
+    ),
+    (
+      'Produtos Perigosos (MOPP)',
+      'Transporte de Cargas',
+      Icons.warning_rounded,
+    ),
+    (
+      'Veículos de Emergência',
+      'Condução e Procedimentos',
+      Icons.emergency_rounded,
+    ),
+    (
+      'Carga Indivisível',
+      'Normas e Autorização Especial',
+      Icons.fire_truck_rounded,
+    ),
+    (
+      'Mototaxista / Motofretista',
+      'Legislação e Segurança',
+      Icons.two_wheeler_rounded,
+    ),
+    (
+      'Agente de Trânsito',
+      'Formação e Atualização',
+      Icons.local_police_rounded,
+    ),
+    (
+      'Atualizações / Reciclagens',
+      'Cursos e Treinamentos',
+      Icons.autorenew_rounded,
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Secao(
+      titulo: 'Nossos Cursos e Módulos',
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          int colunas = 3;
+          if (constraints.maxWidth < 650) colunas = 2;
+          if (constraints.maxWidth < 430) colunas = 1;
+
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: cursos.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: colunas,
+              crossAxisSpacing: 9,
+              mainAxisSpacing: 9,
+              childAspectRatio: 1.55,
+            ),
+            itemBuilder: (context, index) {
+              final curso = cursos[index];
+
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFF203B50), Color(0xFF111E29)],
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: 10,
+                      top: 9,
+                      child: Icon(curso.$3, color: Colors.white12, size: 65),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(11),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(curso.$3, color: Colors.white, size: 26),
+                          const Spacer(),
+                          Text(
+                            curso.$1,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 3),
+                          Text(
+                            curso.$2,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 8,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+}
+
+class EscolinhaMotoristas extends StatelessWidget {
+  const EscolinhaMotoristas({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const etapas = [
+      ('01', 'Selecionar'),
+      ('02', 'Capacitar'),
+      ('03', 'Treinar'),
+      ('04', 'Avaliar'),
+      ('05', 'Contratar'),
+      ('06', 'Acompanhar'),
+    ];
+
+    return Secao(
+      titulo: 'Escolinha de Motoristas',
+      subtitulo: 'Do candidato ao profissional',
+      child: Column(
+        children: etapas
+            .map(
+              (e) => Padding(
+                padding: const EdgeInsets.only(bottom: 7),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 15,
+                      backgroundColor: PainelExperiencia.vermelho,
+                      child: Text(
+                        e.$1,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 8,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 9),
+                    Expanded(
+                      child: Text(
+                        e.$2,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.chevron_right_rounded,
+                      size: 17,
+                      color: Colors.black38,
+                    ),
+                  ],
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+}
+
+class AvaliacaoPratica extends StatelessWidget {
+  const AvaliacaoPratica({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    const itens = [
+      ('01', 'Uso excessivo da embreagem', 'Grave'),
+      ('02', 'Troca de marcha inadequada', 'Média'),
+      ('03', 'Frenagem brusca', 'Grave'),
+      ('04', 'Manutenção da faixa', 'Leve'),
+      ('05', 'Uso incorreto dos retrovisores', 'Média'),
+      ('06', 'Distância de segurança', 'Leve'),
+      ('07', 'Respeito à sinalização', 'Leve'),
+    ];
+
+    return Secao(
+      titulo: 'Avaliação Prática do Motorista',
+      child: Column(
+        children: itens
+            .map(
+              (item) => Container(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Color(0xFFE8EAEC))),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 25,
+                      child: Text(
+                        item.$1,
+                        style: const TextStyle(
+                          color: PainelExperiencia.vermelho,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 9,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(item.$2, style: const TextStyle(fontSize: 9)),
+                    ),
+                    Text(
+                      item.$3,
+                      style: const TextStyle(
+                        fontSize: 8,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+}
+
+class PortalInstrutor extends StatelessWidget {
+  const PortalInstrutor({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 410,
+      child: Secao(
+        titulo: 'Portal do Instrutor',
+        subtitulo: 'Ensine, acompanhe e gerencie suas turmas',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '• Acesso aos módulos contratados\n'
+              '• Gestão de alunos e avaliações\n'
+              '• Emissão de certificados\n'
+              '• Assinatura do instrutor responsável',
+              style: TextStyle(fontSize: 10, height: 1.7),
+            ),
+            const SizedBox(height: 10),
+            const Wrap(
+              spacing: 7,
+              runSpacing: 7,
+              children: [
+                Plano('1 Módulo', 'R\$ 49,90/mês'),
+                Plano('3 Módulos', 'R\$ 89,90/mês'),
+                Plano('Todos os Módulos', 'R\$ 149,90/mês'),
+              ],
+            ),
+            const SizedBox(height: 10),
+            FilledButton.icon(
+              style: FilledButton.styleFrom(
+                backgroundColor: PainelExperiencia.vermelho,
+              ),
+              onPressed: null,
+              icon: const Icon(Icons.login_rounded),
+              label: const Text('Solicitar acesso'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Plano extends StatelessWidget {
+  final String titulo;
+  final String valor;
+
+  const Plano(this.titulo, this.valor, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F6F7),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            titulo,
+            style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            valor,
+            style: const TextStyle(
+              color: PainelExperiencia.vermelho,
+              fontSize: 9,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CertificadosCarteirinhas extends StatelessWidget {
+  const CertificadosCarteirinhas({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 330,
+      child: Secao(
+        titulo: 'Certificados e Carteirinhas',
+        child: Column(
+          children: [
+            const AcaoDocumento(
+              Icons.workspace_premium_rounded,
+              'Gerar Certificado PDF',
+              'Com assinatura do instrutor responsável',
+            ),
+            const SizedBox(height: 8),
+            const AcaoDocumento(
+              Icons.badge_rounded,
+              'Gerar Carteirinha do Aprovado',
+              'Identificação profissional do aluno',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class AcaoDocumento extends StatelessWidget {
+  final IconData icon;
+  final String titulo;
+  final String descricao;
+
+  const AcaoDocumento(this.icon, this.titulo, this.descricao, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(9),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F6F7),
+        borderRadius: BorderRadius.circular(7),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: PainelExperiencia.vermelho, size: 30),
+          const SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  titulo,
+                  style: const TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  descricao,
+                  style: const TextStyle(fontSize: 8, color: Colors.black54),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ReferenciasLegais extends StatelessWidget {
+  const ReferenciasLegais({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      child: Secao(
+        titulo: 'Referências Legais',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Referencia('CTB', 'Código de Trânsito Brasileiro'),
+            const Referencia('CONTRAN', 'Normas e regulamentações'),
+            const Referencia('SENATRAN', 'Diretrizes nacionais'),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFF0F0),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.verified_rounded,
+                    color: PainelExperiencia.vermelho,
+                    size: 17,
+                  ),
+                  SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      'Conteúdo legal versionado e sujeito à validação das normas vigentes.',
+                      style: TextStyle(
+                        fontSize: 8,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Referencia extends StatelessWidget {
+  final String sigla;
+  final String descricao;
+
+  const Referencia(this.sigla, this.descricao, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 7),
+      child: Row(
+        children: [
+          Container(
+            width: 55,
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              color: PainelExperiencia.azulEscuro,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              sigla,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(width: 7),
+          Expanded(child: Text(descricao, style: const TextStyle(fontSize: 9))),
+        ],
+      ),
+    );
+  }
+}
+
+class Secao extends StatelessWidget {
+  final String titulo;
+  final String? subtitulo;
+  final Widget child;
+
+  const Secao({
+    super.key,
+    required this.titulo,
+    this.subtitulo,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(13),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: const Color(0xFFE4E7E9)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            titulo,
+            style: const TextStyle(
+              color: PainelExperiencia.texto,
+              fontSize: 14,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          if (subtitulo != null) ...[
+            const SizedBox(height: 2),
+            Text(
+              subtitulo!,
+              style: const TextStyle(color: Colors.black54, fontSize: 9),
+            ),
+          ],
+          const SizedBox(height: 11),
+          child,
+        ],
+      ),
+    );
+  }
+}

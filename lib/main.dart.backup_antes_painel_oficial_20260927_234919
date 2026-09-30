@@ -1,0 +1,301 @@
+﻿import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const ExperienciaApp());
+}
+
+class ExperienciaApp extends StatelessWidget {
+  const ExperienciaApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Experiência - Trânsito e Transporte',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFD71920),
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF4F5F7),
+        useMaterial3: true,
+      ),
+      home: const PainelExperiencia(),
+    );
+  }
+}
+
+class PainelExperiencia extends StatelessWidget {
+  const PainelExperiencia({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'EXPERIÊNCIA',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFD71920),
+              ),
+            ),
+            Text(
+              'Trânsito, Transporte e Treinamentos',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: Center(
+              child: Text(
+                'Coparticipação: Alberto One 3',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: Row(
+        children: [
+          Container(
+            width: 230,
+            color: const Color(0xFF20252B),
+            child: const SafeArea(
+              child: Column(
+                children: [
+                  SizedBox(height: 25),
+                  Icon(
+                    Icons.local_shipping,
+                    color: Colors.white,
+                    size: 46,
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    'EXPERIÊNCIA',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  SizedBox(height: 25),
+                  MenuItem(Icons.dashboard, 'Visão Geral'),
+                  MenuItem(Icons.school, 'Cursos'),
+                  MenuItem(Icons.people, 'Alunos'),
+                  MenuItem(Icons.badge, 'Instrutores'),
+                  MenuItem(Icons.business, 'Empresas'),
+                  MenuItem(Icons.fact_check, 'Avaliações'),
+                  MenuItem(Icons.workspace_premium, 'Certificados'),
+                  MenuItem(Icons.credit_card, 'Carteirinhas'),
+                  MenuItem(Icons.gavel, 'Referências Legais'),
+                  MenuItem(Icons.settings, 'Configurações'),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Painel Administrativo',
+                    style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  const Text(
+                    'Escola de Formação de Motoristas Profissionais',
+                  ),
+                  const SizedBox(height: 24),
+                  Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: const [
+                      CardResumo('12', 'Cursos', Icons.school),
+                      CardResumo('0', 'Alunos', Icons.people),
+                      CardResumo('0', 'Instrutores', Icons.badge),
+                      CardResumo('0', 'Certificados', Icons.workspace_premium),
+                    ],
+                  ),
+                  const SizedBox(height: 28),
+                  const Text(
+                    'Administradores do Sistema',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: [
+                      CardAdministrador(
+                        'Odenilson de Oliveira',
+                        'Administrador • Coordenador de Treinamentos',
+                      ),
+                      CardAdministrador(
+                        'Alberto Neves',
+                        'Administrador • Alberto One 3',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 28),
+                  const Text(
+                    'Formação Profissional',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Wrap(
+                    spacing: 16,
+                    runSpacing: 16,
+                    children: [
+                      CardModulo('Transporte Coletivo', Icons.directions_bus),
+                      CardModulo('Transporte de Cargas', Icons.local_shipping),
+                      CardModulo('Direção Defensiva', Icons.security),
+                      CardModulo('Condução Econômica', Icons.eco),
+                      CardModulo('Gestão de Riscos', Icons.warning_amber),
+                      CardModulo('Avaliação Prática', Icons.fact_check),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MenuItem extends StatelessWidget {
+  final IconData icon;
+  final String texto;
+
+  const MenuItem(this.icon, this.texto, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.white70),
+      title: Text(
+        texto,
+        style: const TextStyle(color: Colors.white),
+      ),
+    );
+  }
+}
+
+class CardResumo extends StatelessWidget {
+  final String numero;
+  final String titulo;
+  final IconData icon;
+
+  const CardResumo(this.numero, this.titulo, this.icon, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 210,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Icon(icon, size: 36, color: const Color(0xFFD71920)),
+              const SizedBox(width: 15),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    numero,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(titulo),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardAdministrador extends StatelessWidget {
+  final String nome;
+  final String funcao;
+
+  const CardAdministrador(this.nome, this.funcao, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 360,
+      child: Card(
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(18),
+          leading: const CircleAvatar(
+            radius: 27,
+            backgroundColor: Color(0xFFD71920),
+            child: Icon(Icons.person, color: Colors.white),
+          ),
+          title: Text(
+            nome,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(funcao),
+        ),
+      ),
+    );
+  }
+}
+
+class CardModulo extends StatelessWidget {
+  final String titulo;
+  final IconData icon;
+
+  const CardModulo(this.titulo, this.icon, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 250,
+      height: 130,
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: const Color(0xFFD71920), size: 32),
+              const Spacer(),
+              Text(
+                titulo,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
